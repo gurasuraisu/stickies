@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stickies</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #1c1c1c;
+            min-height: 100vh;
+            display: flex;
+            padding: 20px;
+        }
+
+        .sidebar {
+            width: 300px;
+            padding: 20px;
+            border-right: 2px solid #666666;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .new-note-btn {
+            background-color: #666666;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .new-note-btn:hover {
+            background-color: #bdd6ff;
+            color: #1c1c1c;
+        }
+
+        .search-bar {
+            padding: 12px 20px;
+            background-color: transparent;
+            border: 2px solid #666666;
+            border-radius: 25px;
+            color: white;
+            outline: none;
+        }
+
+        .notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        .note-item {
+            padding: 15px 20px;
+            background-color: transparent;
+            border: 2px solid #666666;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .note-item.active {
+            border-color: #bdd6ff;
+        }
+
+        .note-item:hover {
+            border-color: #bdd6ff;
+        }
+
+        .note-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .note-preview {
+            color: #666666;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .note-editor {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .title-input {
+            padding: 12px 20px;
+            background-color: transparent;
+            border: 2px solid #666666;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        .content-input {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: transparent;
+            border: 2px solid #666666;
+            border-radius: 25px;
+            color: white;
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+            line-height: 1.5;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .toolbar-btn {
+            background-color: #666666;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .toolbar-btn:hover {
+            background-color: #bdd6ff;
+            color: #1c1c1c;
+        }
+
+        .delete-btn {
+            background-color: #ff6b6b;
+        }
+
+        .delete-btn:hover {
+            background-color: #ff4f4f;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button class="new-note-btn">New Sticky</button>
+        <input type="text" class="search-bar" placeholder="Search stickies...">
+        <div class="notes-list"></div>
+    </div>
+    <div class="main-content">
+        <div class="note-editor">
+            <input type="text" class="title-input" placeholder="Sticky title">
+            <textarea class="content-input" placeholder="Start writing..."></textarea>
+            <div class="toolbar">
+                <button class="toolbar-btn delete-btn">Delete</button>
+                <button class="toolbar-btn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const notesList = document.querySelector('.notes-list');
+        const newNoteBtn = document.querySelector('.new-note-btn');
+        const searchBar = document.querySelector('.search-bar');
+        const titleInput = document.querySelector('.title-input');
+        const contentInput = document.querySelector('.content-input');
+        const saveBtn = document.querySelector('.toolbar-btn:not(.delete-btn)');
+        const deleteBtn = document.querySelector('.delete-btn');
+
+        let notes = JSON.parse(localStorage.getItem('notes')) || [];
+        let currentNoteId = null;
+
+        function createNote() {
+            const note = {
+                id: Date.now(),
+                title: 'Untitled Note',
+                content: '',
+                timestamp: new Date().toISOString()
+            };
+            notes.unshift(note);
+            currentNoteId = note.id;
+            saveNotes();
+            renderNotes();
+            loadNote(note);
+        }
+
+        function saveNotes() {
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+
+        function renderNotes() {
+            const searchTerm = searchBar.value.toLowerCase();
+            const filteredNotes = notes.filter(note => 
+                note.title.toLowerCase().includes(searchTerm) || 
+                note.content.toLowerCase().includes(searchTerm)
+            );
+
+            notesList.innerHTML = filteredNotes.map(note => `
+                <div class="note-item ${note.id === currentNoteId ? 'active' : ''}" 
+                     data-id="${note.id}">
+                    <div class="note-title">${note.title}</div>
+                    <div class="note-preview">${note.content.substring(0, 50)}${note.content.length > 50 ? '...' : ''}</div>
+                </div>
+            `).join('');
+
+            // Add click listeners
+            document.querySelectorAll('.note-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const note = notes.find(n => n.id === parseInt(item.dataset.id));
+                    if (note) {
+                        currentNoteId = note.id;
+                        loadNote(note);
+                        renderNotes();
+                    }
+                });
+            });
+        }
+
+        function loadNote(note) {
+            titleInput.value = note.title;
+            contentInput.value = note.content;
+        }
+
+        function saveCurrentNote() {
+            if (currentNoteId) {
+                const note = notes.find(n => n.id === currentNoteId);
+                if (note) {
+                    note.title = titleInput.value;
+                    note.content = contentInput.value;
+                    note.timestamp = new Date().toISOString();
+                    saveNotes();
+                    renderNotes();
+                }
+            }
+        }
+
+        function deleteCurrentNote() {
+            if (currentNoteId) {
+                notes = notes.filter(n => n.id !== currentNoteId);
+                saveNotes();
+                currentNoteId = notes.length > 0 ? notes[0].id : null;
+                renderNotes();
+                if (currentNoteId) {
+                    loadNote(notes[0]);
+                } else {
+                    titleInput.value = '';
+                    contentInput.value = '';
+                }
+            }
+        }
+
+        // Event listeners
+        newNoteBtn.addEventListener('click', createNote);
+        saveBtn.addEventListener('click', saveCurrentNote);
+        deleteBtn.addEventListener('click', deleteCurrentNote);
+        searchBar.addEventListener('input', renderNotes);
+
+        // Auto-save on input
+        titleInput.addEventListener('input', saveCurrentNote);
+        contentInput.addEventListener('input', saveCurrentNote);
+
+        // Initial render
+        if (notes.length > 0) {
+            currentNoteId = notes[0].id;
+            loadNote(notes[0]);
+        }
+        renderNotes();
+    </script>
+</body>
+</html>
