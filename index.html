@@ -8,238 +8,261 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-           /* Dark Theme (Default) Variables */
-           --background-color-dark: #1c1c1c;
-           --text-color-dark: #f9f9f9;
-           --secondary-text-color-dark: rgba(255, 255, 255, 0.7);
-           --modal-background-dark: rgba(51, 51, 51, 0.8);
-           --modal-transparent-dark: rgba(51, 51, 51, 0.7);
-           --search-background-dark: rgba(51, 51, 51, 0.5);
-           --dark-overlay: rgba(51, 51, 51, 0.2);
-           --dark-transparent: rgba(255, 255, 255, 0.1); 
-           
-           /* Light Theme Variables */
-           --background-color-light: #f0f0f0;
-           --text-color-light: #333333;
-           --secondary-text-color-light: rgba(0, 0, 0, 0.7);
-           --modal-background-light: rgba(220, 220, 220, 0.8);
-           --modal-transparent-light: rgba(240, 240, 240, 0.7);
-           --search-background-light: rgba(220, 220, 220, 0.5);
-           --light-overlay: rgba(220, 220, 220, 0.2);
-           --light-transparent: rgba(255, 255, 255, 0.1);
-           
-           /* Default to Dark Theme */
-           --background-color: var(--background-color-dark);
-           --text-color: var(--text-color-dark);
-           --secondary-text-color: var(--secondary-text-color-dark);
-           --modal-background: var(--modal-background-dark);
-           --modal-transparent: var(--modal-transparent-dark);
-           --search-background: var(--search-background-dark);
-           --overlay-color: var(--dark-overlay);
-           --transparent-color: var(--dark-transparent);
+            /* Dark Theme (Default) Variables */
+            --background-color-dark: #1c1c1c;
+            --text-color-dark: #f9f9f9;
+            --secondary-text-color-dark: rgba(255, 255, 255, 0.7);
+            --modal-background-dark: rgba(51, 51, 51, 0.8);
+            --modal-transparent-dark: rgba(51, 51, 51, 0.7);
+            --search-background-dark: rgba(51, 51, 51, 0.5);
+            --dark-overlay: rgba(51, 51, 51, 0.2);
+            --dark-transparent: rgba(255, 255, 255, 0.1); 
+            
+            /* Light Theme Variables */
+            --background-color-light: #f0f0f0;
+            --text-color-light: #333333;
+            --secondary-text-color-light: rgba(0, 0, 0, 0.7);
+            --modal-background-light: rgba(220, 220, 220, 0.8);
+            --modal-transparent-light: rgba(240, 240, 240, 0.7);
+            --search-background-light: rgba(220, 220, 220, 0.5);
+            --light-overlay: rgba(220, 220, 220, 0.2);
+            --light-transparent: rgba(255, 255, 255, 0.1);
+            
+            /* Default to Dark Theme */
+            --background-color: var(--background-color-dark);
+            --text-color: var(--text-color-dark);
+            --secondary-text-color: var(--secondary-text-color-dark);
+            --modal-background: var(--modal-background-dark);
+            --modal-transparent: var(--modal-transparent-dark);
+            --search-background: var(--search-background-dark);
+            --overlay-color: var(--dark-overlay);
+            --transparent-color: var(--dark-transparent);
         }
         
         body.light-theme {
-           --background-color: var(--background-color-light);
-           --text-color: var(--text-color-light);
-           --secondary-text-color: var(--secondary-text-color-light);
-           --modal-background: var(--modal-background-light);
-           --modal-transparent: var(--modal-transparent-light);
-           --search-background: var(--search-background-light);
-           --overlay-color: var(--light-overlay);
-           --transparent-color: var(--light-transparent);
+            --background-color: var(--background-color-light);
+            --text-color: var(--text-color-light);
+            --secondary-text-color: var(--secondary-text-color-light);
+            --modal-background: var(--modal-background-light);
+            --modal-transparent: var(--modal-transparent-light);
+            --search-background: var(--search-background-light);
+            --overlay-color: var(--light-overlay);
+            --transparent-color: var(--light-transparent);
         }
         
         * {
-           margin: 0;
-           padding: 0;
-           box-sizing: border-box;
-           font-family: 'Inter', sans-serif;
-           -webkit-tap-highlight-color: transparent;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-           background-color: var(--background-color);
-           min-height: 100vh;
-           display: flex;
-           padding: 20px;
-           user-select: none;
-           transition: background-color 0.3s, color 0.3s;
-           color: var(--text-color);
+            background-color: var(--background-color);
+            min-height: 100vh;
+            display: flex;
+            padding: 20px;
+            user-select: none;
+            transition: background-color 0.3s, color 0.3s;
+            color: var(--text-color);
         }
         
         .sidebar {
-           width: 300px;
-           padding: 20px;
-           border-right: 2px solid var(--modal-transparent);
-           display: flex;
-           flex-direction: column;
-           gap: 20px;
+            width: 300px;
+            padding: 20px;
+            border-right: 2px solid var(--overlay-color);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
         .main-content {
-           flex-grow: 1;
-           padding: 20px;
-           display: flex;
-           flex-direction: column;
-           gap: 20px;
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         
         .new-note-btn {
-           background-color: var(--search-background);
-           color: var(--text-color);
-           border: none;
-           border-radius: 25px;
-           padding: 12px 20px;
-           cursor: pointer;
-           transition: background-color 0.2s;
-           backdrop-filter: blur(10px);
+            background-color: var(--search-background);
+            color: var(--text-color);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
         
-        .new-note-btn:hover {
-           background-color: var(--text-color);
-           color: var(--background-color);
+        .new-note-btn:hover, .new-note-btn.active {
+            background-color: var(--text-color);
+            color: var(--background-color);
         }
         
         .search-bar {
-           padding: 12px 20px;
-           background-color: transparent;
-           border: 2px solid var(--modal-transparent);
-           border-radius: 25px;
-           color: var(--text-color);
-           outline: none;
+            padding: 12px 20px;
+            background-color: var(--search-background);
+            border: none;
+            border-radius: 25px;
+            color: var(--text-color);
+            outline: none;
         }
         
         .notes-list {
-           display: flex;
-           flex-direction: column;
-           gap: 10px;
-           overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
         }
         
         .note-item {
-           padding: 15px 20px;
-           background-color: transparent;
-           border: 2px solid var(--modal-transparent);
-           border-radius: 25px;
-           color: var(--text-color);
-           cursor: pointer;
-           transition: border-color 0.2s;
+            padding: 15px 20px;
+            background-color: var(--overlay-color);
+            border: none;
+            border-radius: 25px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
         
         .note-item.active {
-           border-color: var(--text-color);
+            background-color: var(--search-background);
         }
         
         .note-item:hover {
-           border-color: var(--text-color);
+            background-color: var(--search-background);
         }
         
         .note-title {
-           font-weight: 500;
-           margin-bottom: 5px;
+            font-weight: 500;
+            margin-bottom: 5px;
         }
         
         .note-preview {
-           color: var(--secondary-text-color);
-           font-size: 0.9rem;
-           white-space: nowrap;
-           overflow: hidden;
-           text-overflow: ellipsis;
+            color: var(--secondary-text-color);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .note-editor {
-           display: flex;
-           flex-direction: column;
-           gap: 20px;
-           height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
         }
         
         .title-input {
-           padding: 12px 20px;
-           background-color: transparent;
-           border: 2px solid var(--modal-transparent);
-           border-radius: 25px;
-           color: var(--text-color);
-           font-size: 1.1rem;
-           outline: none;
+            padding: 12px 20px;
+            background-color: var(--search-background);
+            border: none;
+            border-radius: 25px;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            outline: none;
         }
         
         .content-input {
-           flex-grow: 1;
-           padding: 20px;
-           background-color: transparent;
-           border: 2px solid var(--modal-transparent);
-           border-radius: 25px;
-           color: var(--text-color);
-           font-size: 1rem;
-           resize: none;
-           outline: none;
-           line-height: 1.5;
+            flex-grow: 1;
+            padding: 20px;
+            background-color: var(--search-background);
+            border: none;
+            border-radius: 25px;
+            color: var(--text-color);
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+            line-height: 1.5;
         }
         
         .toolbar {
-           display: flex;
-           gap: 10px;
-           justify-content: flex-end;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
         }
         
         .toolbar-btn {
-           background-color: var(--search-background);
-           color: var(--text-color);
-           border: none;
-           border-radius: 25px;
-           padding: 8px 15px;
-           cursor: pointer;
-           transition: background-color 0.2s;
-           backdrop-filter: blur(10px);
+            background-color: var(--search-background);
+            color: var(--text-color);
+            border: none;
+            border-radius: 25px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
         
-        .toolbar-btn:hover {
-           background-color: var(--text-color);
-           color: var(--background-color);
+        .toolbar-btn:hover, .toolbar-btn.active {
+            background-color: var(--text-color);
+            color: var(--background-color);
         }
         
         .delete-btn {
-           background-color: #ff6b6b;
-           color: white;
+            background-color: var(--search-background);
+            color: var(--text-color);
         }
         
         .delete-btn:hover {
-           background-color: #ff4f4f;
+            background-color: var(--text-color);
+            color: var(--background-color);
         }
         
-        /* For clickable elements */
-        button,
-        .note-item {
-           transform: scale(1);
-           transition: transform 0.15s cubic-bezier(0.2, 0, 0.38, 0.9);
+        /* For all clickable elements */
+        [onclick], 
+        button, 
+        a, 
+        input[type="button"], 
+        input[type="submit"],
+        .clickable {
+          cursor: pointer;
+          transform: scale(1);
+          transition: transform 0.15s cubic-bezier(0.2, 0, 0.38, 0.9);
         }
         
-        /* Active effect */
-        button:active,
-        .note-item:active {
-           transform: scale(0.96);
-           transition: transform 0.1s cubic-bezier(0.2, 0, 0.38, 0.9);
+        /* Active effect (when clicking down) */
+        [onclick]:active, 
+        button:active, 
+        a:active, 
+        input[type="button"]:active, 
+        input[type="submit"]:active,
+        .clickable:active {
+          transform: scale(0.96);
+          transition: transform 0.1s cubic-bezier(0.2, 0, 0.38, 0.9);
         }
         
-        /* Reduce animations */
+        /* When animations are disabled */
         .reduce-animations * {
-           animation: none !important;
-           transition: opacity 0.3s ease !important;
-           transition-property: opacity !important;
+            /* Disable all animations */
+            animation: none !important;
+        
+            /* Disable all transitions except opacity */
+            transition: opacity 0.3s ease !important;
+            transition-property: opacity !important;
         }
         
+        /* Special handling for clickable elements */
+        .reduce-animations [onclick],
         .reduce-animations button,
-        .reduce-animations .note-item {
-           transform: scale(1) !important;
-           transition: opacity 0.3s ease !important;
+        .reduce-animations a,
+        .reduce-animations input[type="button"],
+        .reduce-animations input[type="submit"],
+        .reduce-animations .clickable {
+            /* Keep initial state but remove transition */
+            transform: scale(1) !important;
+            transition: opacity 0.3s ease !important;
         }
         
+        /* Keep active state functional but without animation */
+        .reduce-animations [onclick]:active,
         .reduce-animations button:active,
-        .reduce-animations .note-item:active {
-           transform: scale(0.98) !important;
-           transition: none !important;
+        .reduce-animations a:active,
+        .reduce-animations input[type="button"]:active,
+        .reduce-animations input[type="submit"]:active,
+        .reduce-animations .clickable:active {
+            /* Apply scale instantly without transition */
+            transform: scale(0.98) !important;
+            transition: none !important;
         }
     </style>
 </head>
